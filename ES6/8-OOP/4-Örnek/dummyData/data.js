@@ -1,0 +1,23 @@
+const productList = [
+  { price: 34.5, prodName: "Süt (1L)" },
+  { price: 18.25, prodName: "Ekmek (Tam Buğday)" },
+  { price: 145.0, prodName: "Süzme Peynir (500g)" },
+  { price: 210.0, prodName: "Dana Kıyma (500g)" },
+  { price: 85.0, prodName: "Yumurta (15'li L Boy)" },
+  { price: 42.0, prodName: "Makarna (Burgu - 500g)" },
+  { price: 320.0, prodName: "Zeytinyağı (Sızma - 1L)" },
+  { price: 65.0, prodName: "Domates (1kg)" },
+  { price: 24.5, prodName: "Kuru Soğan (1kg)" },
+  { price: 110.0, prodName: "Siyah Çay (500g)" },
+  { price: 185.0, prodName: "Türk Kahvesi (250g)" },
+  { price: 48.0, prodName: "Yoğurt (1kg)" },
+  { price: 75.0, prodName: "Tereyağı (250g)" },
+  { price: 130.0, prodName: "Baldo Pirinç (1kg)" },
+  { price: 55.0, prodName: "Kırmızı Mercimek (1kg)" },
+  { price: 32.0, prodName: "Ayçiçek Yağı (500ml)" },
+  { price: 19.5, prodName: "Maden Suyu (6'lı)" },
+  { price: 160.0, prodName: "Çamaşır Deterjanı (3kg)" },
+  { price: 45.0, prodName: "Bulaşık Süngeri (5'li)" },
+  { price: 95.0, prodName: "Tuvalet Kağıdı (12 Rulo)" },
+];
+

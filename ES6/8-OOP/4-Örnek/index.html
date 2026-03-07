@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Market UI - OOP</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+              <h2 class="h4 mb-0 text-center" id="market-title">
+                Market Ürün Paneli
+              </h2>
+            </div>
+            <div class="card-body">
+              <div id="product-grid" class="row g-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-0 sticky-top" style="top: 20px">
+            <div class="card-header bg-dark text-white py-3">
+              <h4 class="h5 mb-0">🛒 Sepetiniz</h4>
+            </div>
+            <div class="card-body">
+              <ul id="basket-list" class="list-group list-group-flush mb-3">
+                <li class="list-group-item text-muted text-center py-4">
+                  Sepetiniz henüz boş.
+                </li>
+              </ul>
+
+              <div id="discount-info" class="text-end mb-2"></div>
+
+              <hr />
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="h5 mb-0">Toplam:</span>
+                <h3 class="fw-bold text-success mb-0" id="total-price">
+                  0.00 TL
+                </h3>
+              </div>
+
+              <button
+                class="btn btn-warning w-100 mt-4 fw-bold"
+                onclick="location.reload()"
+              >
+                Sepeti Temizle / Yeni Müşteri
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
