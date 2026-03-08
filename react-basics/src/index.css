@@ -1,0 +1,15 @@
+.title {
+  color: rgb(30, 101, 5);
+}
+
+.price {
+  color: rgb(255, 149, 0);
+}
+
+.discount {
+  color: green;
+}
+
+.f20 {
+  font-size: 20px;
+}

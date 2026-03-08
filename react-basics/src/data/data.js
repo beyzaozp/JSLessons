@@ -1,0 +1,51 @@
+export const items = [
+  {
+    image: "234",
+    title: "Ürün 1",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 8000,
+    isActive: true,
+  },
+  {
+    image: "132",
+    title: "Ürün 2",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 8000,
+    isActive: true,
+  },
+  {
+    image: "23",
+    title: "Ürün 3",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 3000,
+    isActive: true,
+  },
+  {
+    image: "34",
+    title: "Ürün 4",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 12000,
+    isActive: true,
+  },
+  {
+    image: "46",
+    title: "Ürün 5",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 12000,
+    isActive: true,
+  },
+  {
+    image: "115",
+    title: "Ürün 6",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 12000,
+    isActive: true,
+  },
+  {
+    image: "88",
+    title: "Ürün 7",
+    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+    price: 12000,
+    isActive: true,
+  },
+];
