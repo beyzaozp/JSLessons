@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const containerStyle = {
   display: "flex",
@@ -12,7 +13,7 @@ const itemContainerStyle = {
 const textStyle = {
   margin: "0",
   fontSize: "1.5rem",
-}; 
+};
 
 export default function StarRating({
   maxRating = 5,
@@ -20,27 +21,34 @@ export default function StarRating({
   size = 48,
 }) {
   const [rating, setRating] = useState(0);
+  const [hooverRating, setHooverRating] = useState(0);
   return (
     <div style={itemContainerStyle}>
       <div style={containerStyle}>
         {Array.from({ length: maxRating }, (val, i) => (
           <Star
             key={i}
-            fill={rating >= i + 1}
+            fill={hooverRating ? hooverRating >= i + 1 : rating >= i + 1}
             onRating={() => setRating(i + 1)}
             color={color}
             size={size}
+            onHoverEnter={() => setHooverRating(i + 1)}
+            onHoverLeave={() => setHooverRating(0)}
           />
         ))}
       </div>
-      <p style={textStyle}>{rating || ""}</p>
+      <p style={textStyle}>{hooverRating || rating || ""}</p>
     </div>
   );
 }
 
-function Star({ fill, onRating, color, size }) {
+function Star({ fill, onRating, color, size, onHoverEnter, onHoverLeave }) {
   return (
-    <span onClick={onRating}>
+    <span
+      onClick={onRating}
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}
+    >
       {fill ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -65,3 +73,8 @@ function Star({ fill, onRating, color, size }) {
     </span>
   );
 }
+StarRating.propTypes = {
+  maxRating: PropTypes.number,
+  color: PropTypes.string.isRequired,
+  size: PropTypes.number,
+};

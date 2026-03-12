@@ -1,103 +1,84 @@
-import { Children, useState } from "react";
-
-const MovieListData = [
-  {
-    Id: "1",
-    Title: "Interstellar",
-    Year: "2014",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-  },
-  {
-    Id: "2",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
-  },
-  {
-    Id: "3",
-    Title: "The Dark Knight",
-    Year: "2008",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
-  },
-  {
-    Id: "9",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
-  },
-  {
-    Id: "10",
-    Title: "Blade Runner 2049",
-    Year: "2017",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_.jpg",
-  },
-  {
-    Id: "11",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
-  },
-  {
-    Id: "12",
-    Title: "Arrival",
-    Year: "2016",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_.jpg",
-  },
-  {
-    Id: "18",
-    Title: "The Grand Budapest Hotel",
-    Year: "2014",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMzM5NjUxOTEyMl5BMl5BanBnXkFtZTgwNjEyMDM0MDE@._V1_.jpg",
-  },
-];
-
-const selectedMovieList = [
-  {
-    Id: "1",
-    Title: "Interstellar",
-    Year: "2014",
-    duration: 120,
-    rating: 6.9,
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-  },
-  {
-    Id: "2",
-    Title: "Inception",
-    Year: "2010",
-    duration: 114,
-    rating: 8.5,
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
-  },
-];
+import { Children, useEffect, useState } from "react";
 
 const getAverage = (array) =>
-  array.reduce((sum, value) => sum + value, 2) / array.length;
+  array.reduce((sum, value) => sum + value / array.length, 0);
+
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZjQwYTdkYWUxYzJjYmI2MDQ4ZjJhYjU2NzE5MWQ0OCIsIm5iZiI6MTYyNjYwNDkyOC4zNjUsInN1YiI6IjYwZjQwNTgwZjkwYjE5MDA3NDZhM2FjNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n1wlH5iw_r3Sd0p2jj8_tUot9Ex_ucCvcbfz6UQ_3sQ",
+  },
+};
 
 export default function App() {
-  const [movies, setMovies] = useState(MovieListData);
-  const [selectedMovies, setSelectedMovies] = useState(selectedMovieList);
+  const [query, setQuery] = useState("last");
+  const [movies, setMovies] = useState([]);
+  const [selectedMovies, setSelectedMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  function handeSelectMovie(id) {
+    setSelectedMovie((selectedMovie) => (id === selectedMovie ? null : id));
+  }
+  function handleUnselectMovie() {
+    setSelectedMovie(null);
+  }
+
+  useEffect(() => {
+    //first render (mount)
+    async function getMovies() {
+      try {
+        setLoading(true);
+        setError("");
+        const res = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${query}`,
+          options,
+        );
+        if (!res.ok) {
+          throw new Error("Hata oluştu");
+        }
+
+        const data = await res.json();
+        if (data.total_results === 0) throw new Error("Sonuç bulunamadı");
+
+        setMovies(data.results);
+      } catch (err) {
+        setError(err.message);
+      }
+      setLoading(false);
+    }
+    if (query.length < 4) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+    getMovies();
+  }, [query]);
+
+  console.log(selectedMovie);
 
   return (
     <>
       <Nav>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <Results movies={movies} />
       </Nav>
       <Main>
         <div className="col-md-9">
           <ListContainer>
-            <MovieList movies={movies} />
+            {loading && <Loading />}
+            {!loading && !error && (
+              <MovieList
+                movies={movies}
+                onSelectMovie={handeSelectMovie}
+                selectedMovie={selectedMovie}
+              />
+            )}
+            {error && <ErrorMessage message={error} />}
           </ListContainer>
         </div>
         <div className="col-md-3">
@@ -105,12 +86,30 @@ export default function App() {
             <>
               <MyListSummary selectedMovies={selectedMovies} />
               <MyMovieList selectedMovies={selectedMovies} />
+              {selectedMovie && (
+                <MovieDetails
+                  selectedMovie={selectedMovie}
+                  onUnselectMovie={handleUnselectMovie}
+                />
+              )}
             </>
           </ListContainer>
         </div>
       </Main>
     </>
   );
+}
+
+function Loading() {
+  return (
+    <div className="spinner-border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return <div className="alert alert-danger">{message}</div>;
 }
 
 function Nav({ children }) {
@@ -129,10 +128,16 @@ function Logo() {
     </div>
   );
 }
-function Search() {
+function Search({ query, setQuery }) {
   return (
     <div className="col-4">
-      <input type="text" className="form-control" placeholder="Film Ara..." />
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="form-control"
+        placeholder="Film Ara..."
+      />
     </div>
   );
 }
@@ -172,26 +177,61 @@ function ListContainer({ children }) {
   );
 }
 
-function MovieList({ movies }) {
+function MovieList({ movies, onSelectMovie, selectedMovie }) {
   return (
     <div className="row row-cols-1 row-cols-md-3 row-cols-xl-4 g-4">
       {movies.map((movie) => (
-        <Movie key={movie.Id} movie={movie} />
+        <Movie
+          key={movie.id}
+          movie={movie}
+          onSelectMovie={onSelectMovie}
+          selectedMovie={selectedMovie}
+        />
       ))}
     </div>
   );
 }
 
-function Movie({ movie }) {
+function formatDate(dateStr) {
+  if (!dateStr) return "Tarih Yok";
+  return dateStr.split("-").reverse().join(" ");
+}
+function MovieDetails({ selectedMovie, onUnselectMovie }) {
   return (
-    <div className="col mb-2" key={movie.Id}>
-      <div className="card">
-        <img src={movie.Poster} alt={movie.Title} className="card-img-top" />
+    <div className="alert alert-primary d-flex justify-content-between">
+      <p>{selectedMovie}</p>
+      <p
+        className="text text-danger"
+        style={{ cursor: "pointer" }}
+        onClick={onUnselectMovie}
+      >
+        x
+      </p>
+    </div>
+  );
+}
+
+function Movie({ movie, onSelectMovie, selectedMovie }) {
+  return (
+    <div className="col mb-2 ">
+      <div
+        className={`card movie ${selectedMovie === movie.id && "selected-movie"}`}
+        onClick={() => onSelectMovie(movie.id)}
+      >
+        <img
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+              : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+          }
+          alt={movie.title}
+          className="card-img-top"
+        />
         <div className="card-body">
-          <h6 className="card-title">{movie.Title}</h6>
+          <h6 className="card-title">{movie.title}</h6>
           <div>
             <i className="bi bi-calendar2-date me-1"></i>
-            <span>{movie.Year}</span>
+            <span>{formatDate(movie.release_date)}</span>
           </div>
         </div>
       </div>
@@ -225,8 +265,8 @@ function Movie({ movie }) {
 // }
 
 function MyListSummary({ selectedMovies }) {
-  const avarageRating = getAverage(selectedMovieList.map((m) => m.rating));
-  const avarageDuration = getAverage(selectedMovieList.map((m) => m.duration));
+  const avarageRating = getAverage(selectedMovies.map((m) => m.rating));
+  const avarageDuration = getAverage(selectedMovies.map((m) => m.duration));
   return (
     <div className="card mb-2">
       <div className="card-body">
