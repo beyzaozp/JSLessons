@@ -6,19 +6,34 @@ export default function LoginwithState() {
   const initialValues = { email: "", password: "" };
   const [values, setValues] = useState(initialValues);
 
+  // --------------->Validation on KeyPress (tuşa basınca)
+  // const emailIsInValid = values.email !== "" && !values.email.includes("@");
+  // const passwordShort = values.password !== "" && values.password.length < 8;
+
+  // --------------->Validation on Blur (tab tuşuna basınca diğerine geçince)
+  const [isEdited, setIsEdited] = useState({ email: false, password: false });
+
+  const emailIsInValid = isEdited.email && !values.email.includes("@"); // 
+  const passwordShort = isEdited.password && values.password.length < 8;
+
+  function handleInputBlur(e) {
+    const name = e.target.name;
+    setIsEdited((prev) => ({ ...prev, [name]: true })); // bir sonraki inputa geçince hata varsa başlatır
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(values);
-    setValues(initialValues)
+    setValues(initialValues); // submitten sonra formu 0lar
   }
 
   function handleInputChage(e) {
     const name = e.target.name;
     const value = e.target.value;
 
-    setValues({ ...values, [name]: value });
+    setValues({ ...values, [name]: value }); // inputları valueya atar
+    setIsEdited((prev) => ({ ...prev, [name]: false })); // yazmaya başlayınca hatayı kapat
   }
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="header">
@@ -34,9 +49,13 @@ export default function LoginwithState() {
           className="form-control"
           id="email"
           name="email"
+          onBlur={handleInputBlur}
           placeholder={values.email}
           onChange={handleInputChage}
         />
+        {emailIsInValid && (
+          <div className="invalid-feedback d-block">Enter Valid Email.</div>
+        )}
       </div>
       <div className="mb-4">
         <label htmlFor="password" className="form-label">
@@ -47,9 +66,15 @@ export default function LoginwithState() {
           className="form-control"
           id="password"
           name="password"
+          onBlur={handleInputBlur}
           placeholder={values.password}
           onChange={handleInputChage}
         />
+        {passwordShort && (
+          <div className="invalid-feedback d-block">
+            Password should be bigger then 8.
+          </div>
+        )}
       </div>
       <div className="mb-3">
         <button className="btn btn-outline-warning me-2">Submit</button>
