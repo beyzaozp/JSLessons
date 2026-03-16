@@ -1,9 +1,9 @@
 import { useState } from "react";
-export default function useInputs(initialValue) {
+export default function useInputs(initialValue, validationFn) {
   const [value, setValue] = useState(initialValue);
   const [isEdited, setIsEdited] = useState(false);
 
-  
+  const isValid = validationFn(value);
 
   function handleInputBlur() {
     setIsEdited(true);
@@ -14,5 +14,10 @@ export default function useInputs(initialValue) {
     setIsEdited(false);
   }
 
-  return { value, handleInputBlur, handleInputChage, isEdited };
+  return {
+    value,
+    handleInputBlur,
+    handleInputChage,
+    hasError: isEdited && !isValid,
+  };
 }

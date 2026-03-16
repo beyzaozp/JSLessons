@@ -1,25 +1,30 @@
 import Input from "./Input";
 import useInputs from "../hooks/useInputs";
+import { hasMinLength, isEmail, isNotEmpty } from "../utils/validations";
 
 export default function LoginwithUseInputHooks() {
+
+    
   const {
     value: emailValue,
     handleInputBlur: handleEmailInputBlur,
     handleInputChage: handleEmailchange,
-    isEdited: isEmailEdited,
-  } = useInputs("");
+    hasError: hasEmailError,
+  } = useInputs("", (value) => isEmail(value) && isNotEmpty(value));
+
   const {
     value: passwordValue,
     handleInputBlur: handlePasswordInputBlur,
     handleInputChage: handlePasswordChange,
-    isEdited: isPasswordEdited,
-  } = useInputs("");
-
-  const emailIsInValid = isEmailEdited && !emailValue.includes("@");
-  const passwordShort = isPasswordEdited && passwordValue.length < 8;
+    hasError: hasPasswordError,
+  } = useInputs("", (value) => hasMinLength(value, 8));
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (hasEmailError || hasPasswordError) {
+      return;
+    }
   }
 
   return (
@@ -35,7 +40,7 @@ export default function LoginwithUseInputHooks() {
         onBlur={handleEmailInputBlur}
         placeholder={emailValue}
         onChange={handleEmailchange}
-        error={emailIsInValid && "Enter a valid Email"}
+        error={hasEmailError && "Enter a valid Email"}
       />
       <div className="mb-4">
         <Input
@@ -45,7 +50,7 @@ export default function LoginwithUseInputHooks() {
           onBlur={handlePasswordInputBlur}
           placeholder={passwordValue}
           onChange={handlePasswordChange}
-          error={passwordShort && "Password should be bigger then 8."}
+          error={hasPasswordError && "Password should be bigger then 8."}
         />
       </div>
       <div className="mb-3">
