@@ -1,5 +1,6 @@
 //import Login from "./components/Login";
-import LoginwithState from "./components/LoginwithState";
+// import LoginwithState from "./components/LoginwithState";
+import LoginwithUseInputHooks from "./components/LoginwithUseInputHooks";
 //import Register from "./components/Register";
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
     <div className="container my-4">
       {/* <Login /> */}
       {/* <Register /> */}
-      <LoginwithState />
+      {/* <LoginwithState /> */}
+      <LoginwithUseInputHooks />
     </div>
   );
 }
