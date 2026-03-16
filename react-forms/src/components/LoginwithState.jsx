@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 
 export default function LoginwithState() {
   // const [email, setEmail] = useState("example@gmail.com");
@@ -13,7 +14,7 @@ export default function LoginwithState() {
   // --------------->Validation on Blur (tab tuşuna basınca diğerine geçince)
   const [isEdited, setIsEdited] = useState({ email: false, password: false });
 
-  const emailIsInValid = isEdited.email && !values.email.includes("@"); // 
+  const emailIsInValid = isEdited.email && !values.email.includes("@"); //
   const passwordShort = isEdited.password && values.password.length < 8;
 
   function handleInputBlur(e) {
@@ -40,41 +41,25 @@ export default function LoginwithState() {
         <h1>Login</h1>
         <p>Please enter your login and password!</p>
       </div>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email
-        </label>
-        <input
-          type="email"
-          className="form-control"
-          id="email"
-          name="email"
-          onBlur={handleInputBlur}
-          placeholder={values.email}
-          onChange={handleInputChage}
-        />
-        {emailIsInValid && (
-          <div className="invalid-feedback d-block">Enter Valid Email.</div>
-        )}
-      </div>
+      <Input
+        labelText="Email"
+        type="email"
+        name="email"
+        onBlur={handleInputBlur}
+        placeholder={values.email}
+        onChange={handleInputChage}
+        error={emailIsInValid && "Enter a valid Email"}
+      />
       <div className="mb-4">
-        <label htmlFor="password" className="form-label">
-          Password
-        </label>
-        <input
+        <Input
+          labelText="Password"
           type="password"
-          className="form-control"
-          id="password"
           name="password"
           onBlur={handleInputBlur}
           placeholder={values.password}
           onChange={handleInputChage}
+          error={passwordShort && "Password should be bigger then 8."}
         />
-        {passwordShort && (
-          <div className="invalid-feedback d-block">
-            Password should be bigger then 8.
-          </div>
-        )}
       </div>
       <div className="mb-3">
         <button className="btn btn-outline-warning me-2">Submit</button>

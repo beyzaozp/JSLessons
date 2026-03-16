@@ -1,13 +1,13 @@
 //import Login from "./components/Login";
-//import LoginwithState from "./components/LoginwithState";
-import Register from "./components/Register";
+import LoginwithState from "./components/LoginwithState";
+//import Register from "./components/Register";
 
 function App() {
   return (
     <div className="container my-4">
       {/* <Login /> */}
-      <Register />
-      {/* <LoginwithState /> */}
+      {/* <Register /> */}
+      <LoginwithState />
     </div>
   );
 }
