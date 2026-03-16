@@ -1,27 +1,29 @@
+import { useState } from "react";
 export default function Register() {
+  const [passwordError, setPasswordError] = useState(false);
+
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    // console.log(formData.get("name"));
-    // console.log(formData.get("password"));
-    // console.log(formData.get("email"));
-    // console.log(formData.get("re-password"));
-    // console.log(formData.getAll("hobbies"));
-
     const hobbies = formData.getAll("hobbies");
+
     const data = Object.fromEntries(formData.entries());
+
     data.hobbies = hobbies;
 
-    console.log(data);
-
+    if (data.password != data.repassword) {
+      setPasswordError(true);
+      return;
+    }
+    setPasswordError(false);
     e.target.reset();
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="header">
-        <h1>Login</h1>
-        <p>Please enter your login and password!</p>
+        <h1>Register</h1>
+        <p>Please fill all!</p>
       </div>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
@@ -44,7 +46,13 @@ export default function Register() {
         <label htmlFor="email" className="form-label">
           Email
         </label>
-        <input type="email" className="form-control" id="email" name="email" />
+        <input
+          type="email"
+          className="form-control"
+          id="email"
+          name="email"
+          required
+        />
       </div>
       <div className="mb-4">
         <div className="row">
@@ -57,18 +65,29 @@ export default function Register() {
               className="form-control"
               id="password"
               name="password"
+              required
+              minLength={8}
+              maxLength={12}
             />
           </div>
           <div className="col col-6 mb-3">
-            <label htmlFor="re-password" className="form-label">
+            <label htmlFor="repassword" className="form-label">
               Re-Password
             </label>
             <input
-              type="re-password"
+              type="password"
               className="form-control"
-              id="re-password"
-              name="re-password"
+              id="repassword"
+              name="repassword"
+              required
+              minLength={8}
+              maxLength={12}
             />
+            {passwordError && (
+              <div className="invalid-feedback d-block">
+                Parolalar eşleşmiyor
+              </div>
+            )}
           </div>
           <div className="mb-3">
             <label htmlFor="hobbies" className="form-label">
